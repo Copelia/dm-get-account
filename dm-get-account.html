@@ -1,5 +1,7 @@
-<link rel="import" href="../polymer/polymer-element.html">
-<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+<link rel="import" href="bower_components/iron-ajax/iron-ajax.html">
+<!-- <link rel="import" href="../polymer/polymer-element.html"> -->
+<!-- <link rel="import" href="../iron-ajax/iron-ajax.html"> -->
 
 <dom-module id="dm-get-account">
   <template>
@@ -8,11 +10,12 @@
         display: block;
       }
     </style>
-    <h2>Hello [[prop1]]!</h2>
 
+<!-- id="elajax"
+url="[[_url]]" -->
     <iron-ajax
-    id="elajax"
-    url="[[_url]]"
+    auto
+    url="https://extra-server.herokuapp.com/electronicTicketed/accounts/v1/accounts/7493336?expand=blocks"
     params='[[params]]'
     headers='[[headers]]'
     handle-as="json"
@@ -59,13 +62,45 @@
       }
 
       _startRequest(id){
-          // this._url = "https://extra-server.herokuapp.com/electronicTicketed/accounts/v1/accounts/7493336?expand=blocks";
-          this._url = "https://extra-server.herokuapp.com/electronicTicketed/accounts/v1/accounts/"+ id +"/?expand=blocks";
-          this.$.elajax.generateRequest();
+          this._url = "https://extra-server.herokuapp.com/electronicTicketed/accounts/v1/accounts/7493336?expand=blocks";
+          // this._url = "https://extra-server.herokuapp.com/electronicTicketed/accounts/v1/accounts/"+ id +"/?expand=blocks";
+          // this.$.elajax.generateRequest();
       }
 
-    }
+      _getAccountData(data){
+        const res = data.detail.response;
+        // console.log(res);
 
+        const accountArray = [
+            {
+            key: 'Nombre',
+            value: res.data.creatorBusinessAgent.fullName
+            },
+            {
+              key: 'Cuenta',
+              value: res.data.number
+            },
+            {
+              key: 'Fecha de apertura',
+              value: res.data.openingDate
+            },
+            {
+              key: 'Status',
+              value:  res.data.status.name
+            },
+            {
+              key: 'Bloqueada por',
+              value: res.data.blocks[0].description
+            },
+            {
+              key: 'Fecha de bloqueo',
+              value:  res.data.cancellationDate
+            }
+         ] 
+         console.log(accountArray);
+        this.dispatchEvent(new CustomEvent('account-info', {detail: {accountArray}}));
+      }
+    }
 
     window.customElements.define(DmGetAccount.is, DmGetAccount);
   </script>

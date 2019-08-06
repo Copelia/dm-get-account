@@ -4,7 +4,8 @@
   "main": "dm-get-account.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
-    "paper-checkbox": "@polymer/paper-checkbox#2.0-preview"
+    "paper-checkbox": "@polymer/paper-checkbox#2.0-preview",
+    "iron-ajax": "@polymer/iron-ajax#2.0-preview"
   },
   "devDependencies": {
     "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
