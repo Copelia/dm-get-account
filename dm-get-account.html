@@ -1,0 +1,72 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+
+<dom-module id="dm-get-account">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+
+    <iron-ajax
+    id="elajax"
+    url="[[_url]]"
+    params='[[params]]'
+    headers='[[headers]]'
+    handle-as="json"
+    on-response="_getAccountData"
+    /><iron-ajax> 
+
+  </template>
+
+  <script>
+    /**
+     * `dm-get-account`
+     * Tarjeta para segundo servicio
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class DmGetAccount extends Polymer.Element {
+      static get is() { return 'dm-get-account'; }
+      static get properties() {
+        return {
+          id:{
+            type: String,
+            observer: '_startRequest'
+          },
+          _url:{
+            type: String
+          },
+          params: {
+            type: Object,
+            value: function(){
+              return{
+                expand: 'blocks'
+              }
+            }
+          },
+          headers: {
+            type: Object,
+            value: {
+                tsec: '123456'
+            }
+          }
+        };
+      }
+
+      _startRequest(id){
+          // this._url = "https://extra-server.herokuapp.com/electronicTicketed/accounts/v1/accounts/7493336?expand=blocks";
+          this._url = "https://extra-server.herokuapp.com/electronicTicketed/accounts/v1/accounts/"+ id +"/?expand=blocks";
+          this.$.elajax.generateRequest();
+      }
+
+    }
+
+
+    window.customElements.define(DmGetAccount.is, DmGetAccount);
+  </script>
+</dom-module>
